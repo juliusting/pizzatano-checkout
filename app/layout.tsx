@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { BRAND_NAME, SITE_URL, CITY, WHATSAPP_NUMBER } from "@/lib/config";
 import "./globals.css";
 
@@ -24,7 +25,7 @@ const inter = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${BRAND_NAME} — Wood-fired Neapolitan Pizza, Kuching`, template: `%s · ${BRAND_NAME}` },
+  title: { default: `${BRAND_NAME} · Wood-fired Neapolitan Pizza, Kuching`, template: `%s · ${BRAND_NAME}` },
   description: "Neapolitan pizza baked in a wood-fired oven in Kuching, Sarawak. 100% Italian flour from Naples and D.O.P white buffalo mozzarella. Order on WhatsApp.",
   openGraph: { type: "website", siteName: BRAND_NAME, images: ["/images/og/og-cover.jpg"] },
   twitter: { card: "summary_large_image" },
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <CartDrawer />
+        <FloatingWhatsApp />
         <Toaster position="bottom-center" richColors />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
       </body>

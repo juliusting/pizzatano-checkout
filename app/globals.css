@@ -65,5 +65,7 @@
 @layer utilities {
   @keyframes pz-ember { 0%,100% { opacity: .55; transform: translateY(0) scale(1); } 50% { opacity: 1; transform: translateY(-3px) scale(1.06); } }
   .anim-ember { animation: pz-ember 2.4s ease-in-out infinite; }
-  @media (prefers-reduced-motion: reduce) { .anim-ember { animation: none; } }
+  @keyframes pz-ping { 0% { transform: scale(1); opacity: .5; } 70%,100% { transform: scale(1.7); opacity: 0; } }
+  .pz-ping { animation: pz-ping 2.4s cubic-bezier(0,0,0.2,1) infinite; }
+  @media (prefers-reduced-motion: reduce) { .anim-ember, .pz-ping { animation: none; } }
 }

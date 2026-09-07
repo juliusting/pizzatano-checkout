@@ -25,7 +25,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <article className="card flex h-full flex-col overflow-hidden" data-testid={`product-${product.id}`}>
       <div className="relative">
-        <PizzaTile image={product.image} name={product.name} />
+        <PizzaTile image={product.image} name={product.name} kind={product.tile} />
         {product.badge && <span className="absolute left-3 top-3 rounded-full bg-terracotta px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-on-dark">{product.badge}</span>}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">

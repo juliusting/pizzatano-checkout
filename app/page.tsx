@@ -40,6 +40,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Provenance — the trust story, straight from their captions */}
+      <section aria-label="What goes into every pizza" className="border-y border-rule bg-cream-2">
+        <div className="container-x grid gap-6 py-8 sm:grid-cols-3">
+          {[
+            ["100% Italian flour", "Milled and shipped from Naples"],
+            ["D.O.P buffalo mozzarella", "Italian white buffalo, protected origin"],
+            ["Wood-fired at 450°C", "Blistered and ready in about 60 seconds"],
+          ].map(([t, d]) => (
+            <div key={t} className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:gap-3 sm:text-left">
+              <span aria-hidden className="mb-2 mt-1 h-2 w-2 shrink-0 rounded-full bg-terracotta sm:mb-0" />
+              <div>
+                <p className="font-semibold text-ink">{t}</p>
+                <p className="text-sm text-ink-muted">{d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Menu */}
       <section id="menu" className="container-x scroll-mt-20 py-16 md:py-20">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
