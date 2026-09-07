@@ -7,36 +7,27 @@ import { BRAND_NAME, CITY, PHONE_DISPLAY, whatsappEnquiryLink } from "@/lib/conf
 export default function Home() {
   return (
     <>
-      {/* Hero — portrait reel still (720×1280) sits in a tall frame beside the copy; full-bleed on mobile */}
-      <section className="relative overflow-hidden bg-charcoal text-on-dark">
-        <div className="container-x grid min-h-[92vh] items-center gap-8 pb-14 pt-24 md:grid-cols-[1.05fr_0.95fr] md:pt-28">
-          <div className="relative z-10">
-            <p className="eyebrow mb-4 text-ember">Wood-fired · Neapolitan · {CITY}</p>
-            <h1 className="display text-[clamp(2.6rem,7vw,5.2rem)]">
-              Baked in fire.<br /><span className="italic font-medium text-ember">Born in Naples.</span>
-            </h1>
-            <p className="mt-5 max-w-lg text-lg text-on-dark-muted">
-              Hand-stretched dough from 100% Italian flour, D.O.P white buffalo mozzarella, and 60 seconds in a blazing wood-fired oven. Made in Kuching, the Napoli way.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/#menu" className="btn btn-primary">See the menu</Link>
-              <a href={whatsappEnquiryLink()} target="_blank" rel="noopener noreferrer" className="btn btn-whatsapp"><MessageCircle size={16} /> WhatsApp {PHONE_DISPLAY}</a>
-            </div>
-            <ul className="mt-8 flex flex-wrap gap-6 text-sm text-on-dark-muted">
-              <li className="flex items-center gap-2"><Wheat size={16} className="text-ember" /> 100% Italian flour from Naples</li>
-              <li className="flex items-center gap-2"><Flame size={16} className="text-ember anim-ember" /> Wood-fired, blistered crust</li>
-            </ul>
+      {/* Hero — full-bleed finished-pizza-in-oven still (top reel Db-vl3bT0yI); food above the fold */}
+      <section className="relative isolate flex min-h-[93vh] items-end overflow-hidden bg-charcoal text-on-dark">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/hero/hero_000044.jpg" alt={`A Neapolitan pizza baking beside open flames in ${BRAND_NAME}'s wood-fired oven`} width={720} height={1280} fetchPriority="high" className="absolute inset-0 -z-10 h-full w-full object-cover object-center" />
+        <div aria-hidden className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg, rgba(20,14,10,0.60) 0%, rgba(20,14,10,0.12) 30%, rgba(20,14,10,0.60) 68%, rgba(20,14,10,0.93) 100%)" }} />
+        <div className="container-x relative z-10 pb-16 pt-28">
+          <p className="eyebrow mb-4 text-ember">Wood-fired · Neapolitan · {CITY}</p>
+          <h1 className="display max-w-[15ch] text-[clamp(2.7rem,8vw,5.6rem)]" style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45)" }}>
+            Baked in fire.<br /><span className="italic font-medium text-ember">Born in Naples.</span>
+          </h1>
+          <p className="mt-5 max-w-xl text-lg text-on-dark-muted" style={{ textShadow: "0 1px 12px rgba(0,0,0,0.55)" }}>
+            Hand-stretched dough from 100% Italian flour and D.O.P white buffalo mozzarella, about 60 seconds in a 450°C wood-fired oven. Made in Kuching, the Napoli way.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/#menu" className="btn btn-primary">See the menu</Link>
+            <a href={whatsappEnquiryLink()} target="_blank" rel="noopener noreferrer" className="btn btn-whatsapp"><MessageCircle size={16} /> WhatsApp {PHONE_DISPLAY}</a>
           </div>
-          <div className="relative mx-auto w-full max-w-sm md:max-w-none">
-            <div className="overflow-hidden rounded-[2rem] ring-1 ring-on-dark/10" style={{ aspectRatio: "3/4" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/hero/hero_000044.jpg" alt={`A pizza baking beside open flames in ${BRAND_NAME}'s wood-fired oven`} width={720} height={1280} fetchPriority="high" className="h-full w-full object-cover" />
-            </div>
-            <div className="pointer-events-none absolute -bottom-4 -left-2 rounded-2xl bg-cream px-4 py-3 text-ink shadow-xl md:left-6">
-              <p className="display text-lg leading-tight">Ready in ~60s</p>
-              <p className="text-xs text-ink-muted">at 450°C, over real wood</p>
-            </div>
-          </div>
+          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-on-dark-muted">
+            <li className="flex items-center gap-2"><Wheat size={16} className="text-ember" /> 100% Italian flour from Naples</li>
+            <li className="flex items-center gap-2"><Flame size={16} className="text-ember anim-ember" /> Wood-fired, blistered crust</li>
+          </ul>
         </div>
       </section>
 
