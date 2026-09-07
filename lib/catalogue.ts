@@ -32,7 +32,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "margherita", slug: "margherita", name: "Margherita", italian: "La classica",
     description: "San Marzano tomato, D.O.P white buffalo mozzarella, fresh basil, extra-virgin olive oil.",
-    tags: ["Vegetarian"], image: null, tile: "margherita", variants: regular(), badge: "The classic",
+    tags: ["Vegetarian"], image: "/images/menu/margherita.jpg", tile: "margherita", variants: regular(), badge: "The classic",
   },
   {
     id: "diavola", slug: "diavola", name: "Diavola", italian: "The spicy one",
@@ -47,7 +47,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "marinara", slug: "marinara", name: "Marinara",
     description: "Tomato, garlic, oregano and olive oil on a leopard-spotted Neapolitan crust. No cheese, all flavour.",
-    tags: ["Vegan"], image: null, tile: "marinara", variants: regular(),
+    tags: ["Vegan"], image: "/images/menu/marinara.jpg", tile: "marinara", variants: regular(),
   },
   {
     id: "napoli", slug: "napoli", name: "Napoli",
