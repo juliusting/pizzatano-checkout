@@ -1,7 +1,8 @@
 /**
  * Pizzatano — single source of truth for the WhatsApp order handoff.
  * Frontend-only: no backend, no payment gateway. The cart becomes a
- * pre-filled wa.me draft; the kitchen confirms price/total/ETA in chat.
+ * pre-filled wa.me draft; the kitchen confirms the total and sends payment
+ * details (bank transfer / QR — cash is not accepted) on confirmation.
  */
 
 export const BRAND_NAME = "Pizzatano";
@@ -17,14 +18,28 @@ export const CITY = "Kuching, Sarawak";
 export const CURRENCY = "RM";
 export const formatPrice = (n: number) => `${CURRENCY} ${n.toFixed(2)}`;
 
+/** Every pizza is one size. */
+export const PIZZA_SIZE = '11–12" · 8 slices';
+
+/** Opening hours (from Pizzatano's official ordering info). */
+export const HOURS: { days: string; slots: string[] }[] = [
+  { days: "Wednesday – Friday", slots: ["11:30am – 2:30pm", "4:30pm – 7:30pm"] },
+  { days: "Saturday", slots: ["3:30pm – 7:30pm"] },
+  { days: "Sunday", slots: ["11:30am – 2:00pm", "5:15pm – 7:30pm"] },
+];
+export const CLOSED_DAYS = "Closed Monday & Tuesday";
+
+export const PICKUP_AREA = "Pickup near Swinburne University, Kuching (exact address shared on confirmation).";
+export const DELIVERY_NOTE = "Delivery fee varies by location. Riders and weather can add 30 minutes or more; pickup or self-arranged delivery isn't affected.";
+export const PAYMENT_NOTE = "Cashless only — bank transfer or QR. Payment details are shared once your order is confirmed.";
+
 export type OrderType = "pickup" | "delivery";
 
 export interface OrderContact {
   name: string;
-  /** Delivery address (blank for pickup). */
-  address: string;
-  /** Requested time, e.g. "7:30pm today" (optional). */
-  when: string;
+  address: string;   // blank for pickup
+  date: string;      // requested date (optional)
+  when: string;      // requested time (optional)
   note: string;
 }
 
@@ -32,35 +47,28 @@ export interface OrderItem {
   name: string;
   variant?: string | null;
   quantity: number;
-  /** null until the menu price is confirmed — totals are then omitted. */
   unitPrice: number | null;
 }
 
-/**
- * Build the WhatsApp draft body (plain text, NOT url-encoded).
- * If ANY item has no confirmed price, the money lines are omitted and the
- * customer is told the total will be confirmed in chat — we never invent a price.
- */
+/** Build the WhatsApp draft body (plain text, NOT url-encoded), matching Pizzatano's intake. */
 export function buildOrderMessage(contact: OrderContact, items: OrderItem[], type: OrderType): string {
   const L: string[] = [`Hi ${BRAND_NAME}! I'd like to place an order.`, ""];
   L.push(`Name: ${contact.name.trim() || "-"}`);
-  L.push(type === "pickup" ? "Order type: Self-pickup" : "Order type: Delivery");
-  if (type === "delivery") L.push(`Address: ${contact.address.trim() || "-"}`);
+  if (contact.date.trim()) L.push(`Date: ${contact.date.trim()}`);
   if (contact.when.trim()) L.push(`Time: ${contact.when.trim()}`);
-  L.push("", "Order:");
+  L.push(type === "pickup" ? "Pickup: near Swinburne University" : `Delivery to: ${contact.address.trim() || "-"}`);
+  L.push("", `Order (${PIZZA_SIZE}):`);
   items.forEach((it, i) => {
-    const v = it.variant ? ` (${it.variant})` : "";
     const money = it.unitPrice != null ? ` - ${formatPrice(it.unitPrice * it.quantity)}` : "";
-    L.push(`${i + 1}. ${it.name}${v} x${it.quantity}${money}`);
+    L.push(`${i + 1}. ${it.name} x${it.quantity}${money}`);
   });
   const allPriced = items.length > 0 && items.every((it) => it.unitPrice != null);
   if (allPriced) {
     const subtotal = items.reduce((s, it) => s + (it.unitPrice as number) * it.quantity, 0);
     L.push("", `Subtotal: ${formatPrice(subtotal)}`);
-    L.push(type === "delivery" ? "Delivery fee: to be confirmed" : "Collection: Self-pickup");
-  } else {
-    L.push("", "Please confirm the prices and total.");
+    L.push(type === "delivery" ? "Delivery fee: to be confirmed (varies by location)" : "Collection: self-pickup");
   }
+  L.push("", "Payment: bank transfer / QR (please send details to confirm).");
   if (contact.note.trim()) L.push("", `Note: ${contact.note.trim()}`);
   return L.join("\n");
 }

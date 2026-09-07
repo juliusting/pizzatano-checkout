@@ -31,6 +31,7 @@ export default function Nav() {
         <div className="flex items-center gap-1 sm:gap-5">
           <Link href="/#menu" className={linkCls}>Menu</Link>
           <Link href="/#story" className={linkCls}>Our oven</Link>
+          <Link href="/#visit" className={linkCls}>Hours</Link>
           <button type="button" onClick={openDrawer} aria-label="Open cart" data-testid="open-cart"
             className="relative inline-flex items-center gap-2 rounded-full border border-rule bg-cream-2 px-3.5 py-2 text-sm font-semibold text-ink hover:border-terracotta">
             <ShoppingBag size={16} /> <span className="hidden sm:inline">Cart</span>

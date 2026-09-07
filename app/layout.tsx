@@ -33,8 +33,17 @@ export const metadata: Metadata = {
 
 const organizationLd = {
   "@context": "https://schema.org", "@type": "Restaurant", name: BRAND_NAME, url: SITE_URL,
-  servesCuisine: "Neapolitan pizza", address: { "@type": "PostalAddress", addressLocality: "Kuching", addressRegion: "Sarawak", addressCountry: "MY" },
+  servesCuisine: "Neapolitan pizza", priceRange: "RM48–RM98",
+  address: { "@type": "PostalAddress", addressLocality: "Kuching", addressRegion: "Sarawak", addressCountry: "MY" },
   telephone: `+${WHATSAPP_NUMBER}`, image: `${SITE_URL}/images/og/og-cover.jpg`, description: `Wood-fired Neapolitan pizza in ${CITY}.`,
+  paymentAccepted: "Bank transfer, QR / e-wallet", acceptsReservations: false,
+  openingHoursSpecification: [
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Wednesday", "Thursday", "Friday"], opens: "11:30", closes: "14:30" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Wednesday", "Thursday", "Friday"], opens: "16:30", closes: "19:30" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "15:30", closes: "19:30" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: "Sunday", opens: "11:30", closes: "14:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: "Sunday", opens: "17:15", closes: "19:30" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

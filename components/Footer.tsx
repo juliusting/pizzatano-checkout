@@ -1,13 +1,22 @@
 import Link from "next/link";
-import { BRAND_NAME, PHONE_DISPLAY, INSTAGRAM, INSTAGRAM_URL, CITY, whatsappEnquiryLink } from "@/lib/config";
+import { BRAND_NAME, PHONE_DISPLAY, INSTAGRAM, INSTAGRAM_URL, CITY, whatsappEnquiryLink, HOURS, CLOSED_DAYS } from "@/lib/config";
 
 export default function Footer() {
   return (
     <footer className="bg-charcoal text-on-dark">
-      <div className="container-x grid gap-8 py-12 md:grid-cols-3">
+      <div className="container-x grid gap-8 py-12 md:grid-cols-4">
         <div>
           <p className="display text-2xl">{BRAND_NAME}</p>
           <p className="mt-2 max-w-xs text-sm text-on-dark-muted">Wood-fired Neapolitan pizza in {CITY}. 100% Italian flour from Naples, D.O.P white buffalo mozzarella.</p>
+        </div>
+        <div className="text-sm">
+          <p className="mb-2 font-semibold">Hours</p>
+          <ul className="space-y-1.5 text-on-dark-muted">
+            {HOURS.map((h) => (
+              <li key={h.days}><span className="text-on-dark">{h.days}</span><br />{h.slots.join(" · ")}</li>
+            ))}
+            <li className="text-on-dark-muted/80">{CLOSED_DAYS}</li>
+          </ul>
         </div>
         <div className="text-sm">
           <p className="mb-2 font-semibold">Order</p>

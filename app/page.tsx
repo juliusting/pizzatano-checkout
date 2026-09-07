@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Flame, Wheat, MessageCircle } from "lucide-react";
+import { Flame, Wheat, MessageCircle, Clock, MapPin, CreditCard, Bike } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { PRODUCTS, anyPriceUnconfirmed } from "@/lib/catalogue";
-import { BRAND_NAME, CITY, PHONE_DISPLAY, whatsappEnquiryLink } from "@/lib/config";
+import { BRAND_NAME, CITY, PHONE_DISPLAY, whatsappEnquiryLink, PIZZA_SIZE, HOURS, CLOSED_DAYS, PICKUP_AREA, DELIVERY_NOTE, PAYMENT_NOTE } from "@/lib/config";
 
 export default function Home() {
   return (
@@ -55,9 +55,9 @@ export default function Home() {
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow mb-3">The menu</p>
-            <h2 className="display text-4xl md:text-5xl">Five pizzas, one oven</h2>
+            <h2 className="display text-4xl md:text-5xl">Ten pizzas, one fire</h2>
           </div>
-          {anyPriceUnconfirmed() && <p className="max-w-xs text-sm text-ink-muted">Prices are confirmed when you order on WhatsApp.</p>}
+          <p className="max-w-xs text-sm text-ink-muted">Every pizza is {PIZZA_SIZE}.{anyPriceUnconfirmed() ? " Some prices are confirmed on WhatsApp." : ""}</p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {PRODUCTS.map((p) => <ProductCard key={p.id} product={p} />)}
@@ -85,6 +85,39 @@ export default function Home() {
               <li className="flex gap-2"><Wheat size={16} className="mt-0.5 text-terracotta" /> 100% Italian flour from Naples</li>
               <li className="flex gap-2"><Flame size={16} className="mt-0.5 text-terracotta" /> 100% Italian white buffalo mozzarella, D.O.P</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Hours & ordering */}
+      <section id="visit" className="container-x scroll-mt-20 py-16 md:py-20">
+        <p className="eyebrow mb-3">Hours & ordering</p>
+        <h2 className="display text-4xl md:text-5xl">When and how to get one</h2>
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="card p-5">
+            <Clock size={20} className="mb-3 text-terracotta" />
+            <h3 className="mb-2 font-semibold">Opening hours</h3>
+            <ul className="space-y-1.5 text-sm text-ink-muted">
+              {HOURS.map((h) => (
+                <li key={h.days}><span className="font-medium text-ink">{h.days}</span><br />{h.slots.join(" · ")}</li>
+              ))}
+              <li className="pt-1 text-terracotta-deep">{CLOSED_DAYS}</li>
+            </ul>
+          </div>
+          <div className="card p-5">
+            <MapPin size={20} className="mb-3 text-terracotta" />
+            <h3 className="mb-2 font-semibold">Pickup</h3>
+            <p className="text-sm text-ink-muted">{PICKUP_AREA}</p>
+          </div>
+          <div className="card p-5">
+            <Bike size={20} className="mb-3 text-terracotta" />
+            <h3 className="mb-2 font-semibold">Delivery</h3>
+            <p className="text-sm text-ink-muted">{DELIVERY_NOTE}</p>
+          </div>
+          <div className="card p-5">
+            <CreditCard size={20} className="mb-3 text-terracotta" />
+            <h3 className="mb-2 font-semibold">Payment</h3>
+            <p className="text-sm text-ink-muted">{PAYMENT_NOTE}</p>
           </div>
         </div>
       </section>

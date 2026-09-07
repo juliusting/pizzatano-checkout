@@ -8,11 +8,11 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { useCart } from "@/lib/cart";
-import { buildOrderMessage, whatsappOrderLink, formatPrice, type OrderItem, type OrderType, PHONE_DISPLAY } from "@/lib/config";
+import { buildOrderMessage, whatsappOrderLink, formatPrice, type OrderItem, type OrderType, PHONE_DISPLAY, PAYMENT_NOTE, PICKUP_AREA } from "@/lib/config";
 
 const FORM_KEY = "pizzatano-checkout-contact";
-interface Form { name: string; address: string; when: string; note: string; type: OrderType; }
-const EMPTY: Form = { name: "", address: "", when: "", note: "", type: "pickup" };
+interface Form { name: string; address: string; date: string; when: string; note: string; type: OrderType; }
+const EMPTY: Form = { name: "", address: "", date: "", when: "", note: "", type: "pickup" };
 
 export default function CheckoutPage() {
   const { cart, hasLoaded } = useCart();
@@ -22,7 +22,7 @@ export default function CheckoutPage() {
   useEffect(() => { try { localStorage.setItem(FORM_KEY, JSON.stringify(form)); } catch {} }, [form]);
 
   const items: OrderItem[] = useMemo(() => cart.lines.map((l) => ({ name: l.name, variant: l.variant, quantity: l.quantity, unitPrice: l.unitPrice })), [cart.lines]);
-  const message = useMemo(() => buildOrderMessage({ name: form.name, address: form.address, when: form.when, note: form.note }, items, form.type), [form, items]);
+  const message = useMemo(() => buildOrderMessage({ name: form.name, address: form.address, date: form.date, when: form.when, note: form.note }, items, form.type), [form, items]);
   const ready = cart.lines.length > 0 && form.name.trim().length > 1 && (form.type === "pickup" || form.address.trim().length > 5);
   const set = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -56,12 +56,18 @@ export default function CheckoutPage() {
             </div>
           </fieldset>
 
-          {form.type === "delivery" && (
+          {form.type === "delivery" ? (
             <label className="flex flex-col gap-1.5 text-sm font-medium"><span>Delivery address <span className="text-terracotta">*</span></span>
               <textarea name="address" className="field" rows={3} value={form.address} onChange={set("address")} placeholder="Unit, street, area, Kuching" /></label>
+          ) : (
+            <p className="rounded-xl border border-rule bg-cream-2 px-4 py-3 text-sm text-ink-muted">{PICKUP_AREA}</p>
           )}
-          <label className="flex flex-col gap-1.5 text-sm font-medium">When would you like it? <span className="font-normal text-ink-muted">(optional)</span>
-            <input name="when" className="field" value={form.when} onChange={set("when")} placeholder="e.g. 7:30pm tonight" /></label>
+          <div className="grid grid-cols-2 gap-4">
+            <label className="flex flex-col gap-1.5 text-sm font-medium">Date <span className="font-normal text-ink-muted">(optional)</span>
+              <input name="date" className="field" value={form.date} onChange={set("date")} placeholder="e.g. Fri 12 Sep" /></label>
+            <label className="flex flex-col gap-1.5 text-sm font-medium">Time <span className="font-normal text-ink-muted">(optional)</span>
+              <input name="when" className="field" value={form.when} onChange={set("when")} placeholder="e.g. 7:00pm" /></label>
+          </div>
           <label className="flex flex-col gap-1.5 text-sm font-medium">Note for the kitchen <span className="font-normal text-ink-muted">(optional)</span>
             <textarea name="note" className="field" rows={2} value={form.note} onChange={set("note")} placeholder="Extra basil, no chilli…" /></label>
 
@@ -81,7 +87,7 @@ export default function CheckoutPage() {
           ))}
           <div className="my-3 border-t border-rule" />
           <div className="flex justify-between text-sm"><span className="text-ink-muted">Subtotal</span><span className="font-semibold" data-testid="order-subtotal">{cart.subtotal != null ? formatPrice(cart.subtotal) : "Confirmed in chat"}</span></div>
-          <p className="mt-1 text-xs text-ink-muted">{form.type === "delivery" ? "Delivery fee and " : ""}Final total confirmed on WhatsApp.</p>
+          <p className="mt-1 text-xs text-ink-muted">{form.type === "delivery" ? "Delivery fee and " : ""}final total confirmed on WhatsApp. {PAYMENT_NOTE}</p>
           <a href={whatsappOrderLink(message)} target="_blank" rel="noopener noreferrer" data-testid="whatsapp-order"
             aria-disabled={!ready} tabIndex={ready ? 0 : -1} className="btn btn-whatsapp mt-4 w-full">
             <MessageCircle size={16} /> Send order via WhatsApp
